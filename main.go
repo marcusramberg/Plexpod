@@ -1,31 +1,56 @@
 package main
 
 import (
-	"context"
-	"fmt"
 	"net/http"
-	"os"
 
-	"github.com/getkin/kin-openapi/openapi3"
-	"github.com/getkin/kin-openapi/routers/gorillamux"
+	"github.com/labstack/echo/v4"
 )
 
-func main() {
-	ctx := context.Background()
-	loader := openapi3.NewLoader()
-	doc, _ := loader.LoadFromFile("sirikit-cloud-media.json")
-	err := doc.Validate(loader.Context)
-	if err != nil {
-		fmt.Printf("Failed to validate spec: %s\n", err)
-		os.Exit(1)
+type SirikitCloudImpl struct{}
+
+// Configuration Resource
+// (GET /configuration)
+func (SirikitCloudImpl) ExtensionConfiguration(ctx echo.Context, params ExtensionConfigurationParams) error {
+	config := &ExtensionConfig{
+		Url: &"http://vg.no",
 	}
-	router, _ := gorillamux.NewRouter(doc)
+	return ctx.JSON(http.StatusOK, config)
+}
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Path: %s!", r.URL.Path[1:])
-		_, _, _ = router.FindRoute(r)
-	})
+// addMedia
+// (POST /intent/addMedia)
+func (SirikitCloudImpl) AddMediaIntentHandling(ctx echo.Context, params AddMediaIntentHandlingParams) error {
+	return ctx.JSON(http.StatusOK, "OK")
+}
 
-	http.ListenAndServe(":8080", nil)
-	// Do something with route.Operation
+// playMedia
+// (POST /intent/playMedia)
+func (SirikitCloudImpl) PlayMediaIntentHandling(ctx echo.Context, params PlayMediaIntentHandlingParams) error {
+	return ctx.JSON(http.StatusOK, "OK")
+}
+
+// updateMediaAffinity
+// (POST /intent/updateMediaAffinity)
+func (SirikitCloudImpl) UpdateMediaAffinityIntentHandling(ctx echo.Context, params UpdateMediaAffinityIntentHandlingParams) error {
+	return ctx.JSON(http.StatusOK, "OK")
+}
+
+// playMedia
+// (POST /queues/playMedia)
+func (SirikitCloudImpl) PlayMediaOnQueue(ctx echo.Context, params PlayMediaOnQueueParams) error {
+	return ctx.JSON(http.StatusOK, "OK")
+}
+
+// updateActivity
+// (POST /queues/updateActivity)
+func (SirikitCloudImpl) UpdateActivityOnQueue(ctx echo.Context, params UpdateActivityOnQueueParams) error {
+	return ctx.JSON(http.StatusOK, "OK")
+}
+
+func main() {
+	var myApi SirikitCloudImpl
+	e := echo.New()
+	RegisterHandlers(e, myApi)
+
+	e.Logger.Fatal(e.Start(":1323"))
 }

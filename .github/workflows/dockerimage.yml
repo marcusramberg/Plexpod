@@ -6,8 +6,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Linter
+    - name: Lint
       run: docker run -v $PWD:/go golang:latest make lint
+    - name: Test
+      run: docker run -v $PWD:/go golang:latest make test
     - name: Log in to the Container registry
       uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
       with:

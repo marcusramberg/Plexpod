@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 
+	"github.com/labstack/echo-contrib/prometheus"
 	"github.com/labstack/echo/v4"
 )
 
@@ -12,7 +13,7 @@ type SirikitCloudImpl struct{}
 // (GET /configuration)
 func (SirikitCloudImpl) ExtensionConfiguration(ctx echo.Context, params ExtensionConfigurationParams) error {
 	config := &ExtensionConfig{
-		Url: &"http://vg.no",
+		Url: &ctx.Request().RequestURI,
 	}
 	return ctx.JSON(http.StatusOK, config)
 }
@@ -50,6 +51,9 @@ func (SirikitCloudImpl) UpdateActivityOnQueue(ctx echo.Context, params UpdateAct
 func main() {
 	var myApi SirikitCloudImpl
 	e := echo.New()
+	p := prometheus.NewPrometheus("plexpod", nil)
+	p.Use(e)
+
 	RegisterHandlers(e, myApi)
 
 	e.Logger.Fatal(e.Start(":1323"))

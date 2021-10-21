@@ -71,4 +71,4 @@ test-cover:     ## Run test coverage and generate html report
 test-all: test test-bench test-cover
 
 build: 
-	CGO_ENABLED=0 GOOS=linux go build  -ldflags '-s' -installsuffix cgo main.go
+	CGO_ENABLED=0 go build  -ldflags '-s' -installsuffix cgo *.go

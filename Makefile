@@ -19,7 +19,7 @@ help:   ## show this help
 
 all:    ## clean, format, build and unit test
 	make clean-all
-	make gofmt
+	make fmt
 	make build
 	make test
 
@@ -44,6 +44,7 @@ fmt:    ## format the go source files
 	go fmt ./...
 
 lint:   ## lint with gofmt
+	go install github.com/mgechev/revive@latest
 	revive
 
 vet:    ## run go vet on the source files

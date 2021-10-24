@@ -44,7 +44,7 @@ fmt:    ## format the go source files
 	go fmt ./...
 
 lint:   ## lint with gofmt
-	gofmt -e *.go > /dev/null
+	revive
 
 vet:    ## run go vet on the source files
 	go vet ./...

@@ -16,7 +16,7 @@ func TestConfiguration(t *testing.T) {
 	params := &ExtensionConfigurationParams{XApplecloudextensionSessionId: "dummy"}
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
-	h := &SirikitCloudImpl{}
+	h := &sirikitCloudImpl{}
 	// Assertions
 	if assert.NoError(t, h.ExtensionConfiguration(c, *params)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
